@@ -5,6 +5,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:ci": "ng build --prod --sourceMap=false --base-href=/omline/",
+    "test:ci": "ng test --watch=false --code-coverage --source-map true",
     "deploy": "ng deploy --base-href=/omline/",
     "test": "ng test",
     "lint": "ng lint",
