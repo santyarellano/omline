@@ -1,20 +1,34 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
-    <mat-toolbar>Models</mat-toolbar>
+    <mat-toolbar>Content</mat-toolbar>
     <mat-nav-list>
+      <!-- Regressions -->
       <h1 matSubheader>
         <mat-icon matListIcon>insights</mat-icon>
         Regression
       </h1>
       <a mat-list-item href="#">Linear</a>
       <a mat-list-item href="#">Logistic</a>
+
+      <!-- Neural Networks -->
       <mat-divider></mat-divider>
       <h1 matSubheader>
         <mat-icon matListIcon>share</mat-icon>
         Neural Networks
       </h1>
       <h1 matSubheader>soon...</h1>
+
+      <!-- Algorithms -->
+      <mat-divider></mat-divider>
+      <h1 matSubheader>
+        <mat-icon matListIcon>article</mat-icon>
+        Algorithm Docs
+      </h1>
+      <a mat-list-item href="#">Linear Regression</a>
+      <a mat-list-item href="#">Logistic Regression</a>
+
+      <!-- Other -->
       <mat-divider></mat-divider>
       <a mat-list-item href="https://github.com/santyarellano/omline">
         <mat-icon matListIcon>source</mat-icon>
