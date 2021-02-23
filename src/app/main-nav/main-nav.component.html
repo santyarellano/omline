@@ -1,0 +1,29 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+    <mat-toolbar>Models</mat-toolbar>
+    <mat-nav-list>
+      <h1 matSubheader>Regression</h1>
+      <a mat-list-item href="#">Linear</a>
+      <a mat-list-item href="#">Logistic</a>
+      <mat-divider></mat-divider>
+      <h1 matSubheader>Neural Networks</h1>
+      <h1 matSubheader>soon...</h1>
+      <mat-divider></mat-divider>
+      <a mat-list-item href="https://github.com/santyarellano/omline">
+        <mat-icon matListIcon>source</mat-icon>
+        Source Code
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>O-ML-LINE</span>
+    </mat-toolbar>
+    <!-- Add Content Here -->
+  </mat-sidenav-content>
+</mat-sidenav-container>
