@@ -3,11 +3,17 @@
     [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
     <mat-toolbar>Models</mat-toolbar>
     <mat-nav-list>
-      <h1 matSubheader>Regression</h1>
+      <h1 matSubheader>
+        <mat-icon matListIcon>insights</mat-icon>
+        Regression
+      </h1>
       <a mat-list-item href="#">Linear</a>
       <a mat-list-item href="#">Logistic</a>
       <mat-divider></mat-divider>
-      <h1 matSubheader>Neural Networks</h1>
+      <h1 matSubheader>
+        <mat-icon matListIcon>share</mat-icon>
+        Neural Networks
+      </h1>
       <h1 matSubheader>soon...</h1>
       <mat-divider></mat-divider>
       <a mat-list-item href="https://github.com/santyarellano/omline">
