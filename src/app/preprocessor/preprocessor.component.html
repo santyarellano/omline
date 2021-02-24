@@ -3,4 +3,11 @@
     <mat-card-subtitle>
         Use this section to upload and prepare your data set.
     </mat-card-subtitle>
+
+    <div class="form-group">
+        <input #csvInput hidden="true" type="file" onclick="this.value=null" (change)="csvInputChange($event)" />
+        <button mat-flat-button color="primary" (click)="csvInput.click()">Choose Dataset File (CSV)</button>
+    </div>
+    <mat-progress-bar *ngIf="loading_file == true" mode="indeterminate"></mat-progress-bar>
+
 </mat-card>
