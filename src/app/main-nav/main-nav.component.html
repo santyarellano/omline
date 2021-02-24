@@ -8,8 +8,8 @@
         <mat-icon matListIcon>insights</mat-icon>
         Regression
       </h1>
-      <a mat-list-item href="#">Linear</a>
-      <a mat-list-item href="#">Logistic</a>
+      <a mat-list-item routerLink="/linear_regression">Linear</a>
+      <a mat-list-item routerLink="/logistic_regression">Logistic</a>
 
       <!-- Neural Networks -->
       <mat-divider></mat-divider>
@@ -45,6 +45,11 @@
       </button>
       <span>O-ML-LINE</span>
     </mat-toolbar>
+
     <!-- Add Content Here -->
+    <div id="main_content">
+      <router-outlet></router-outlet>
+    </div>
+
   </mat-sidenav-content>
 </mat-sidenav-container>

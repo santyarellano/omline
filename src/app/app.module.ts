@@ -11,11 +11,17 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { PreprocessorComponent } from './preprocessor/preprocessor.component';
+import { LinearRegressionComponent } from './linear-regression/linear-regression.component';
+import { LogisticRegressionComponent } from './logistic-regression/logistic-regression.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MainNavComponent
+    MainNavComponent,
+    PreprocessorComponent,
+    LinearRegressionComponent,
+    LogisticRegressionComponent
   ],
   imports: [
     BrowserModule,
