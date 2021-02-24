@@ -11,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { MatCardModule } from '@angular/material/card';
 import { PreprocessorComponent } from './preprocessor/preprocessor.component';
 import { LinearRegressionComponent } from './linear-regression/linear-regression.component';
 import { LogisticRegressionComponent } from './logistic-regression/logistic-regression.component';
@@ -32,7 +33,8 @@ import { LogisticRegressionComponent } from './logistic-regression/logistic-regr
     MatButtonModule,
     MatSidenavModule,
     MatIconModule,
-    MatListModule
+    MatListModule,
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]

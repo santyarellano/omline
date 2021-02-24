@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './linear-regression.component.html',
   styleUrls: ['./linear-regression.component.css']
 })
+
 export class LinearRegressionComponent implements OnInit {
 
   constructor() { }
