@@ -1,12 +1,14 @@
 <mat-card>
     <mat-card-title>Prepare your dataset</mat-card-title>
     <mat-card-subtitle>
-        Use this section to upload and prepare your data set.
+        Use this section to upload and prepare your data set. (Please make sure the content of your file is in CSV
+        format)
     </mat-card-subtitle>
 
     <div class="form-group">
         <input #csvInput hidden="true" type="file" onclick="this.value=null" (change)="csvInputChange($event)" />
-        <button mat-flat-button color="primary" (click)="csvInput.click()">Choose Dataset File (CSV)</button>
+        <button id="file_input" mat-flat-button color="primary" (click)="csvInput.click()">Choose Dataset File
+            (CSV)</button>
     </div>
     <mat-progress-bar *ngIf="loading_file == true" mode="indeterminate"></mat-progress-bar>
 
