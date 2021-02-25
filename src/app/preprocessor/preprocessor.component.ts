@@ -6,22 +6,32 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./preprocessor.component.css']
 })
 export class PreprocessorComponent implements OnInit {
-  loading_file: Boolean = false;
+  loading: Boolean = false;
   csv_file?: File;
-
+  first_row_names: Boolean = true;
+  separator: string = "Coma";
+  separator_options: string[] = [
+    'Coma',
+    'Whitespace',
+    'Semicolon'
+  ];
 
   constructor() {
-    //this.csv_file = null;
   }
 
   ngOnInit(): void {
   }
 
+  /*
+  FILE INPUT CHANGE:
+  - Update button text with filename
+  - Call readfile()
+  */
   csvInputChange(fileInputEvent: any) {
     this.csv_file = fileInputEvent.target.files[0];
     //console.log(file); // <- remove
-    this.loading_file = true;
-    let btn = document.getElementById("file_input");
+    this.loading = true;
+    let btn = document.getElementById("file-input");
     if (this.csv_file) {
       if (btn) {
         btn.textContent = this.csv_file.name;
@@ -30,6 +40,12 @@ export class PreprocessorComponent implements OnInit {
     }
   }
 
+  /*
+  READFILE(FILE):
+  1. Check if file has CSV content
+  2. Get names if first row (checkbox)
+  3. Read content with separator (radio buttons)
+  */
   readFile(file: File) {
     console.log(file);
   }

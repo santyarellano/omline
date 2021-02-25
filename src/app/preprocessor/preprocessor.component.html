@@ -5,11 +5,26 @@
         format)
     </mat-card-subtitle>
 
+    <!-- Upload csv file -->
     <div class="form-group">
         <input #csvInput hidden="true" type="file" onclick="this.value=null" (change)="csvInputChange($event)" />
-        <button id="file_input" mat-flat-button color="primary" (click)="csvInput.click()">Choose Dataset File
+        <button id="file-input" mat-flat-button color="primary" (click)="csvInput.click()">Choose Dataset File
             (CSV)</button>
-    </div>
-    <mat-progress-bar *ngIf="loading_file == true" mode="indeterminate"></mat-progress-bar>
 
+        <mat-checkbox id="first-row-names" color="primary" [(ngModel)]="first_row_names">
+            First row is names
+        </mat-checkbox>
+    </div>
+
+    <!-- choose separator -->
+    <br>
+    <label id="separator-radiogroup-label">Separator:</label>
+    <mat-radio-group aria-labelledby="separator-radiogroup-label" class="separator-radiogroup" [(ngModel)]="separator">
+        <mat-radio-button color="primary" class="separator-radiobutton" *ngFor="let sep of separator_options"
+            [value]="sep">
+            {{sep}}
+        </mat-radio-button>
+    </mat-radio-group>
+
+    <mat-progress-bar *ngIf="loading == true" mode="indeterminate"></mat-progress-bar>
 </mat-card>
