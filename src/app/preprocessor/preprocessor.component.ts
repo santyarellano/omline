@@ -8,7 +8,6 @@ import { Component, OnInit } from '@angular/core';
 export class PreprocessorComponent implements OnInit {
   loading: Boolean = false;
   csv_file?: File;
-  first_row_names: Boolean = true;
   separator: string = "Coma";
   separator_options: string[] = [
     'Coma',
@@ -40,6 +39,17 @@ export class PreprocessorComponent implements OnInit {
     }
   }
 
+  getDelimiter() {
+    if (this.separator == "Coma")
+      return ',';
+    else if (this.separator == "Whitespace")
+      return ' ';
+    else if (this.separator == "Semicolon")
+      return ';';
+    else
+      return ',';
+  }
+
   /*
   READFILE(FILE):
   1. Check if file has CSV content
@@ -47,6 +57,32 @@ export class PreprocessorComponent implements OnInit {
   3. Read content with separator (radio buttons)
   */
   readFile(file: File) {
-    console.log(file);
+    var reader = new FileReader();
+    var delimiter = this.getDelimiter();
+
+    reader.onload = function (e) {
+      var target: any = e.target;
+      var data = target.result;
+
+      // split by new line
+      var rows = data.toString().split('\n');
+
+      var content = [];
+
+      // get names
+      var names = rows[0].toString().split(delimiter);
+
+      // split by delimiter
+      for (var i = 1; i < rows.length; i++) {
+        var row = rows[i].split(delimiter);
+        var element = {}
+        for (var j = 0; j < row.length; j++) {
+          element[names[j]] = row[j];
+        }
+        content.push(element);
+      }
+
+    }
+    reader.readAsText(file);
   }
 }
