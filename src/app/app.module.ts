@@ -18,6 +18,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatTableModule } from '@angular/material/table';
 
 // COMPONENTS
 import { PreprocessorComponent } from './preprocessor/preprocessor.component';
@@ -46,7 +47,8 @@ import { LogisticRegressionComponent } from './logistic-regression/logistic-regr
     MatCardModule,
     MatProgressBarModule,
     MatCheckboxModule,
-    MatRadioModule
+    MatRadioModule,
+    MatTableModule
   ],
   providers: [],
   bootstrap: [AppComponent]

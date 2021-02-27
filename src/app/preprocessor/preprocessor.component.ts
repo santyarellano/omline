@@ -15,8 +15,9 @@ export class PreprocessorComponent implements OnInit {
     'Whitespace',
     'Semicolon'
   ];
-  table_loaded = false;
-  data = [];
+  show_table = false;
+  dataSource = [];
+  dataSource_keys = [];
 
   constructor() {
   }
@@ -40,8 +41,10 @@ export class PreprocessorComponent implements OnInit {
 
       this.readFile(this.csv_file).then((content) => {
         // assign to content and draw in table
-        this.data = content;
-
+        this.dataSource = content;
+        this.dataSource_keys = Object.keys(this.dataSource[0]);
+        this.show_table = true;
+        this.loading = false;
       });
     }
   }
@@ -81,7 +84,7 @@ export class PreprocessorComponent implements OnInit {
         var names = rows[0].toString().split(delimiter);
 
         // split by delimiter
-        for (var i = 1; i < rows.length; i++) {
+        for (var i = 1; i < rows.length - 1; i++) {
           var row = rows[i].split(delimiter);
           var element = {}
           for (var j = 0; j < row.length; j++) {

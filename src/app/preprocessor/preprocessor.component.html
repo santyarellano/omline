@@ -24,5 +24,19 @@
         </mat-radio-button>
     </mat-radio-group>
 
+    <!-- Table -->
+    <table mat-table *ngIf="show_table == true" [dataSource]="dataSource" class="mat-elevation-z8">
+
+        <ng-container *ngFor="let def of dataSource_keys">
+            <ng-container [matColumnDef]="def">
+                <th mat-header-cell *matHeaderCellDef> {{def}} </th>
+                <td mat-cell *matCellDef="let element"> {{element[def]}} </td>
+            </ng-container>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="dataSource_keys"></tr>
+        <tr mat-row *matRowDef="let row; columns: dataSource_keys;"></tr>
+    </table>
+
     <mat-progress-bar *ngIf="loading == true" mode="indeterminate"></mat-progress-bar>
 </mat-card>
