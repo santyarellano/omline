@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { rejects } from 'assert';
 
 @Component({
   selector: 'app-preprocessor',
@@ -14,6 +15,8 @@ export class PreprocessorComponent implements OnInit {
     'Whitespace',
     'Semicolon'
   ];
+  table_loaded = false;
+  data = [];
 
   constructor() {
   }
@@ -28,14 +31,18 @@ export class PreprocessorComponent implements OnInit {
   */
   csvInputChange(fileInputEvent: any) {
     this.csv_file = fileInputEvent.target.files[0];
-    //console.log(file); // <- remove
     this.loading = true;
     let btn = document.getElementById("file-input");
     if (this.csv_file) {
       if (btn) {
         btn.textContent = this.csv_file.name;
       }
-      this.readFile(this.csv_file);
+
+      this.readFile(this.csv_file).then((content) => {
+        // assign to content and draw in table
+        this.data = content;
+
+      });
     }
   }
 
@@ -56,33 +63,37 @@ export class PreprocessorComponent implements OnInit {
   2. Get names if first row (checkbox)
   3. Read content with separator (radio buttons)
   */
-  readFile(file: File) {
+  readFile(file: File): Promise<any[]> {
     var reader = new FileReader();
     var delimiter = this.getDelimiter();
-
-    reader.onload = function (e) {
-      var target: any = e.target;
-      var data = target.result;
-
-      // split by new line
-      var rows = data.toString().split('\n');
-
-      var content = [];
-
-      // get names
-      var names = rows[0].toString().split(delimiter);
-
-      // split by delimiter
-      for (var i = 1; i < rows.length; i++) {
-        var row = rows[i].split(delimiter);
-        var element = {}
-        for (var j = 0; j < row.length; j++) {
-          element[names[j]] = row[j];
-        }
-        content.push(element);
-      }
-
-    }
     reader.readAsText(file);
+    var content = [];
+
+    return new Promise((resolve, reject) => {
+      reader.onload = function (e) {
+        var target: any = e.target;
+        var data = target.result;
+
+        // split by new line
+        var rows = data.toString().split('\n');
+
+        // get names
+        var names = rows[0].toString().split(delimiter);
+
+        // split by delimiter
+        for (var i = 1; i < rows.length; i++) {
+          var row = rows[i].split(delimiter);
+          var element = {}
+          for (var j = 0; j < row.length; j++) {
+            element[names[j]] = row[j];
+          }
+          content.push(element);
+        }
+
+        //return content;
+        resolve(content);
+      }
+    });
+
   }
 }
