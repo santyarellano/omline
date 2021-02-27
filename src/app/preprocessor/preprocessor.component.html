@@ -25,18 +25,22 @@
     </mat-radio-group>
 
     <!-- Table -->
-    <table mat-table *ngIf="show_table == true" [dataSource]="dataSource" class="mat-elevation-z8">
+    <div *ngIf="show_table == true" style="margin-top: 2%;">
+        <mat-card-subtitle>Showing only top 5 elements</mat-card-subtitle>
+        <table mat-table *ngIf="show_table == true" [dataSource]="dataSource|slice:0:5" class="mat-elevation-z8">
 
-        <ng-container *ngFor="let def of dataSource_keys">
-            <ng-container [matColumnDef]="def">
-                <th mat-header-cell *matHeaderCellDef> {{def}} </th>
-                <td mat-cell *matCellDef="let element"> {{element[def]}} </td>
+            <ng-container *ngFor="let def of dataSource_keys">
+                <ng-container [matColumnDef]="def">
+                    <th mat-header-cell *matHeaderCellDef> {{def}} </th>
+                    <td mat-cell *matCellDef="let element"> {{element[def]}} </td>
+                </ng-container>
             </ng-container>
-        </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="dataSource_keys"></tr>
-        <tr mat-row *matRowDef="let row; columns: dataSource_keys;"></tr>
-    </table>
+            <tr mat-header-row *matHeaderRowDef="dataSource_keys"></tr>
+            <tr mat-row *matRowDef="let row; columns: dataSource_keys;"></tr>
+        </table>
+    </div>
+
 
     <mat-progress-bar *ngIf="loading == true" mode="indeterminate"></mat-progress-bar>
 </mat-card>
