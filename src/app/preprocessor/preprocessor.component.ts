@@ -79,25 +79,6 @@ export class PreprocessorComponent implements OnInit {
         var target: any = e.target;
         var data = target.result;
 
-        /*
-        // split by new line
-        var rows = data.toString().split('\n');
-
-        // get names
-        var names = rows[0].toString().split(delimiter);
-
-        // split by delimiter
-        for (var i = 1; i < rows.length - 1; i++) {
-          var row = rows[i].split(delimiter);
-          var element = {}
-          for (var j = 0; j < row.length; j++) {
-            element[names[j]] = row[j];
-          }
-          content.push(element);
-        }
-
-        //return content;
-        resolve(content);*/
         resolve(serv.ParseText(data, delimiter));
       }
     });

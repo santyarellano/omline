@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { PreprocessorServiceService } from '../preprocessor-service.service';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -22,7 +23,7 @@ export class LinearLearnerComponent implements OnInit {
   running = false;
   valid_params = true;
 
-  constructor() { }
+  constructor(private prep_service: PreprocessorServiceService) { }
 
   ngOnInit(): void {
   }
@@ -30,6 +31,7 @@ export class LinearLearnerComponent implements OnInit {
   run() {
     this.running = true;
     document.getElementById("run_btn").innerText = "Running...";
+    console.log(this.prep_service.data);
   }
 
 }
