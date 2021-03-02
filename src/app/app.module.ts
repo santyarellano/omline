@@ -19,11 +19,13 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTableModule } from '@angular/material/table';
+import { MatInputModule } from '@angular/material/input';
 
 // COMPONENTS
 import { PreprocessorComponent } from './preprocessor/preprocessor.component';
 import { LinearRegressionComponent } from './linear-regression/linear-regression.component';
 import { LogisticRegressionComponent } from './logistic-regression/logistic-regression.component';
+import { LinearLearnerComponent } from './linear-learner/linear-learner.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,8 @@ import { LogisticRegressionComponent } from './logistic-regression/logistic-regr
     MainNavComponent,
     PreprocessorComponent,
     LinearRegressionComponent,
-    LogisticRegressionComponent
+    LogisticRegressionComponent,
+    LinearLearnerComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +51,8 @@ import { LogisticRegressionComponent } from './logistic-regression/logistic-regr
     MatProgressBarModule,
     MatCheckboxModule,
     MatRadioModule,
-    MatTableModule
+    MatTableModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

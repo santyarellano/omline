@@ -27,7 +27,7 @@
     <!-- Table -->
     <div *ngIf="show_table == true" style="margin-top: 2%;">
         <mat-card-subtitle>Showing only top 5 elements</mat-card-subtitle>
-        <table mat-table *ngIf="show_table == true" [dataSource]="dataSource|slice:0:5" class="mat-elevation-z8">
+        <table mat-table *ngIf="show_table == true" [dataSource]="dataSource|slice:0:5" class="mat-elevation-z4">
 
             <ng-container *ngFor="let def of dataSource_keys">
                 <ng-container [matColumnDef]="def">

@@ -1,0 +1,25 @@
+<mat-card>
+    <mat-card-title>Define learning process</mat-card-title>
+    <mat-card-subtitle>Use this section to define what rules will apply to your learning process (amount of epochs, max
+        amount of error, etc.).</mat-card-subtitle>
+
+    <mat-form-field>
+        <mat-label>Maximum amount of epochs</mat-label>
+        <input matInput type="number" [(ngModel)]="epochs_amount" placeholder="# of Epochs">
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+        <mat-label>Minimum error allowed</mat-label>
+        <input matInput type="number" min="0" max="100" [(ngModel)]="error_limit" placeholder="Error allowed">
+        <span matSuffix>%&nbsp;</span>
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+        <mat-label>Learning Rate</mat-label>
+        <input matInput type="number" [(ngModel)]="learning_rate" placeholder="learning rate">
+    </mat-form-field>
+    <br>
+
+    <button id="run_btn" (click)="run()" mat-flat-button color="accent"
+        [disabled]="running && valid_params">Run</button>
+</mat-card>

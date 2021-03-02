@@ -94,6 +94,7 @@ export class PreprocessorComponent implements OnInit {
         }
 
         //return content;
+        console.log(content);
         resolve(content);
       }
     });
