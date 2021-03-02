@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { rejects } from 'assert';
+import { PreprocessorServiceService } from '../preprocessor-service.service';
 
 @Component({
   selector: 'app-preprocessor',
@@ -19,7 +20,7 @@ export class PreprocessorComponent implements OnInit {
   dataSource = [];
   dataSource_keys = [];
 
-  constructor() {
+  constructor(private prep_service: PreprocessorServiceService) {
   }
 
   ngOnInit(): void {
@@ -71,12 +72,14 @@ export class PreprocessorComponent implements OnInit {
     var delimiter = this.getDelimiter();
     reader.readAsText(file);
     var content = [];
+    var serv = this.prep_service;
 
     return new Promise((resolve, reject) => {
       reader.onload = function (e) {
         var target: any = e.target;
         var data = target.result;
 
+        /*
         // split by new line
         var rows = data.toString().split('\n');
 
@@ -94,8 +97,8 @@ export class PreprocessorComponent implements OnInit {
         }
 
         //return content;
-        console.log(content);
-        resolve(content);
+        resolve(content);*/
+        resolve(serv.ParseText(data, delimiter));
       }
     });
 
