@@ -40,7 +40,7 @@ export class PreprocessorComponent implements OnInit {
         btn.textContent = this.csv_file.name;
       }
 
-      this.readFile(this.csv_file).then((content) => {
+      this.readFile().then((content) => {
         // assign to content and draw in table
         this.dataSource = content;
         this.dataSource_keys = Object.keys(this.dataSource[0]);
@@ -67,18 +67,17 @@ export class PreprocessorComponent implements OnInit {
   2. Get names if first row (checkbox)
   3. Read content with separator (radio buttons)
   */
-  readFile(file: File): Promise<any[]> {
+  readFile(): Promise<any[]> {
     var reader = new FileReader();
     var delimiter = this.getDelimiter();
-    reader.readAsText(file);
-    var content = [];
+    reader.readAsText(this.csv_file);
     var serv = this.prep_service;
+    var table = document.getElementById("head_table");
 
     return new Promise((resolve, reject) => {
       reader.onload = function (e) {
         var target: any = e.target;
         var data = target.result;
-
         resolve(serv.ParseText(data, delimiter));
       }
     });

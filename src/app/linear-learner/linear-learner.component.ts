@@ -23,7 +23,7 @@ export class LinearLearnerComponent implements OnInit {
   running = false;
   valid_params = true;
 
-  constructor(private prep_service: PreprocessorServiceService) { }
+  constructor(public prep_service: PreprocessorServiceService) { }
 
   ngOnInit(): void {
   }

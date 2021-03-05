@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class PreprocessorServiceService {
+  data_uploaded = false;
   data = [];
   labels = [];
 
@@ -22,7 +23,7 @@ export class PreprocessorServiceService {
       }
       this.data.push(element);
     }
-
+    this.data_uploaded = true;
     return this.data;
   }
 }

@@ -7,15 +7,7 @@
         format and that the first row is of labels).
     </mat-card-subtitle>
 
-    <!-- Upload csv file -->
-    <div class="form-group">
-        <input #csvInput hidden="true" type="file" onclick="this.value=null" (change)="csvInputChange($event)" />
-        <button id="file-input" mat-flat-button color="primary" (click)="csvInput.click()">Choose Dataset File
-            (CSV)</button>
-    </div>
-
     <!-- choose separator -->
-    <br>
     <label id="separator-radiogroup-label">Separator:</label>
     <mat-radio-group aria-labelledby="separator-radiogroup-label" class="separator-radiogroup" [(ngModel)]="separator">
         <mat-radio-button color="primary" class="separator-radiobutton" *ngFor="let sep of separator_options"
@@ -24,10 +16,19 @@
         </mat-radio-button>
     </mat-radio-group>
 
+    <!-- Upload csv file -->
+    <br>
+    <div class="form-group">
+        <input #csvInput hidden="true" type="file" onclick="this.value=null" (change)="csvInputChange($event)" />
+        <button id="file-input" mat-flat-button color="primary" (click)="csvInput.click()">Choose Dataset File
+            (CSV)</button>
+    </div>
+
     <!-- Table -->
     <div *ngIf="show_table == true" style="margin-top: 2%;">
         <mat-card-subtitle>Showing only top 5 elements</mat-card-subtitle>
-        <table mat-table *ngIf="show_table == true" [dataSource]="dataSource|slice:0:5" class="mat-elevation-z4">
+        <table mat-table *ngIf="show_table == true" [dataSource]="dataSource|slice:0:5" class="mat-elevation-z4"
+            id="head_table">
 
             <ng-container *ngFor="let def of dataSource_keys">
                 <ng-container [matColumnDef]="def">
@@ -40,7 +41,6 @@
             <tr mat-row *matRowDef="let row; columns: dataSource_keys;"></tr>
         </table>
     </div>
-
 
     <mat-progress-bar *ngIf="loading == true" mode="indeterminate"></mat-progress-bar>
 </mat-card>
