@@ -1,9 +1,9 @@
-<mat-card *ngIf="prep_service.data_uploaded == true">
+<mat-card>
     <mat-card-title>Define learning process</mat-card-title>
     <mat-card-subtitle>Use this section to define what rules will apply to your learning process (amount of epochs, max
         amount of error, etc.).</mat-card-subtitle>
 
-    <div id="form-elements">
+    <div class="grid-container">
         <mat-form-field>
             <mat-label>Maximum amount of epochs</mat-label>
             <input matInput type="number" [(ngModel)]="epochs_amount" placeholder="# of Epochs">
@@ -21,24 +21,41 @@
         </mat-form-field>
     </div>
 
-    <!-- Features to analize -->
-    <section class="example-section">
-        <span class="example-list-section">
-            <mat-checkbox class="example-margin" [checked]="selectedAllFeatures" [indeterminate]="someComplete()"
-                (change)="setAll($event.checked)">
-                {{feature.name}}
-            </mat-checkbox>
-        </span>
-        <span class="example-list-section">
-            <ul>
-                <li *ngFor="let subfeature of feature.subfeatures">
-                    <mat-checkbox [(ngModel)]="subfeature.selected" (ngModelChange)="updateAllFeaturesSelected()">
-                        {{subfeature.name}}
-                    </mat-checkbox>
-                </li>
-            </ul>
-        </span>
-    </section>
+    <div class="grid-container">
+        <!-- Features to analize -->
+        <section class="grid-section">
+            <span class="checkbox-list-section">
+                <mat-checkbox class="example-margin" color="primary" [checked]="selectedAllFeatures"
+                    [indeterminate]="someComplete()" (change)="setAll($event.checked)">
+                    {{feature.name}}
+                </mat-checkbox>
+            </span>
+            <span class="checkbox-list-section">
+                <ul>
+                    <li *ngFor="let subfeature of feature.subfeatures">
+                        <mat-checkbox [(ngModel)]="subfeature.selected" color="primary"
+                            (ngModelChange)="updateAllFeaturesSelected()">
+                            {{subfeature.name}}
+                        </mat-checkbox>
+                    </li>
+                </ul>
+            </span>
+        </section>
+
+        <!-- Feature to predict -->
+        <div class="grid-section">
+            <label style="font-size: 1.1rem;">Feature to predict</label>
+            <mat-radio-group aria-labelledby="feature-radiogroup-label" class="feature-radiogroup"
+                [(ngModel)]="predict_feature">
+                <mat-radio-button color="primary" class="feature-radiobutton" *ngFor="let feature of selected_features"
+                    [value]="feature">
+                    {{feature}}
+                </mat-radio-button>
+            </mat-radio-group>
+        </div>
+
+    </div>
+
 
     <br>
 

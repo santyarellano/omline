@@ -33,16 +33,25 @@ export class LinearLearnerComponent implements OnInit {
     name: 'All Features',
     selected: false,
     subfeatures: [
-      { name: 'Primary', selected: false },
-      { name: 'Accent', selected: false },
-      { name: 'Warn', selected: false }
     ]
   };
   selectedAllFeatures: boolean = false;
 
+  predict_feature: string;
+  selected_features: string[];
+
   constructor(public prep_service: PreprocessorServiceService) { }
 
   ngOnInit(): void {
+    this.prep_service.labels.forEach((label) => {
+      var auxFeature = {
+        name: label,
+        selected: false
+      };
+
+      this.feature.subfeatures.push(auxFeature);
+    });
+    this.setAll(true);
   }
 
   run() {
@@ -53,6 +62,7 @@ export class LinearLearnerComponent implements OnInit {
 
   updateAllFeaturesSelected() {
     this.selectedAllFeatures = this.feature.subfeatures != null && this.feature.subfeatures.every(t => t.selected);
+    this.updateSelectedFeatures();
   }
 
   someComplete(): boolean {
@@ -68,6 +78,17 @@ export class LinearLearnerComponent implements OnInit {
       return;
     }
     this.feature.subfeatures.forEach(t => t.selected = selected);
+    this.updateSelectedFeatures();
+  }
+
+  updateSelectedFeatures() {
+    this.selected_features = [];
+    this.feature.subfeatures.forEach((feature) => {
+      if (feature.selected) {
+        this.selected_features.push(feature.name);
+      }
+    });
+    this.predict_feature = this.selected_features[0];
   }
 
 }

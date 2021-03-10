@@ -1,12 +1,39 @@
+/* DEFAULTS */
 mat-label {
     font-size: large;
 }
 
 mat-form-field {
     margin: 8px;
+    flex: 1;
 }
 
-#form-elements {
+ul {
+    list-style-type: none;
+    margin-top: 4px;
+}
+
+/* CLASSES */
+.grid-container {
     display: flex;
     flex-wrap: wrap;
+}
+
+.grid-section {
+    margin: 12px;
+    flex: 1;
+}
+
+.checkbox-margin {
+    margin: 2px 12px;
+}
+
+.feature-radiogroup {
+    display: flex;
+    flex-direction: column;
+    margin: 2px 0;
+}
+
+.feature-radiobutton {
+    margin: 2px;
 }

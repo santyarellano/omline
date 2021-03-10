@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PreprocessorServiceService } from '../preprocessor-service.service';
 
 @Component({
   selector: 'app-linear-regression',
@@ -8,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 
 export class LinearRegressionComponent implements OnInit {
 
-  constructor() { }
+  constructor(public prep_service: PreprocessorServiceService) { }
 
   ngOnInit(): void {
   }
