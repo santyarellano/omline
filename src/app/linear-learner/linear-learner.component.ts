@@ -11,6 +11,12 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   }
 }
 
+export interface Feature {
+  name: string;
+  selected: boolean;
+  subfeatures?: Feature[];
+}
+
 @Component({
   selector: 'app-linear-learner',
   templateUrl: './linear-learner.component.html',
@@ -23,6 +29,17 @@ export class LinearLearnerComponent implements OnInit {
   running = false;
   valid_params = true;
 
+  feature: Feature = {
+    name: 'All Features',
+    selected: false,
+    subfeatures: [
+      { name: 'Primary', selected: false },
+      { name: 'Accent', selected: false },
+      { name: 'Warn', selected: false }
+    ]
+  };
+  selectedAllFeatures: boolean = false;
+
   constructor(public prep_service: PreprocessorServiceService) { }
 
   ngOnInit(): void {
@@ -32,6 +49,25 @@ export class LinearLearnerComponent implements OnInit {
     this.running = true;
     document.getElementById("run_btn").innerText = "Running...";
     console.log(this.prep_service.data);
+  }
+
+  updateAllFeaturesSelected() {
+    this.selectedAllFeatures = this.feature.subfeatures != null && this.feature.subfeatures.every(t => t.selected);
+  }
+
+  someComplete(): boolean {
+    if (this.feature.subfeatures == null) {
+      return false;
+    }
+    return this.feature.subfeatures.filter(t => t.selected).length > 0 && !this.selectedAllFeatures;
+  }
+
+  setAll(selected: boolean) {
+    this.selectedAllFeatures = selected;
+    if (this.feature.subfeatures == null) {
+      return;
+    }
+    this.feature.subfeatures.forEach(t => t.selected = selected);
   }
 
 }

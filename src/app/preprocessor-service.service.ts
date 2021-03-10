@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class PreprocessorServiceService {
-  data_uploaded = true; // default should be false
+  data_uploaded = false; // default should be false
   data = [];
   labels = [];
 

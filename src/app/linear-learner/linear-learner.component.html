@@ -21,6 +21,25 @@
         </mat-form-field>
     </div>
 
+    <!-- Features to analize -->
+    <section class="example-section">
+        <span class="example-list-section">
+            <mat-checkbox class="example-margin" [checked]="selectedAllFeatures" [indeterminate]="someComplete()"
+                (change)="setAll($event.checked)">
+                {{feature.name}}
+            </mat-checkbox>
+        </span>
+        <span class="example-list-section">
+            <ul>
+                <li *ngFor="let subfeature of feature.subfeatures">
+                    <mat-checkbox [(ngModel)]="subfeature.selected" (ngModelChange)="updateAllFeaturesSelected()">
+                        {{subfeature.name}}
+                    </mat-checkbox>
+                </li>
+            </ul>
+        </span>
+    </section>
+
     <br>
 
     <button id="run_btn" (click)="run()" mat-flat-button color="accent"
