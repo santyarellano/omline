@@ -20,6 +20,7 @@ export class LinearLearnerComponent implements OnInit {
   error_limit = 5;
   learning_rate = 0.33;
   running = false;
+  show_process = false;
   valid_params = true;
 
   feature: Feature = {
@@ -49,8 +50,8 @@ export class LinearLearnerComponent implements OnInit {
 
   run() {
     this.running = true;
+    this.show_process = true;
     document.getElementById("run_btn").innerText = "Running...";
-    console.log(this.prep_service.data);
   }
 
   updateAllFeaturesSelected() {

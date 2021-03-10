@@ -21,6 +21,9 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 
+// OTHER LIBS
+import { NgxEchartsModule } from 'ngx-echarts';
+
 // COMPONENTS
 import { PreprocessorComponent } from './preprocessor/preprocessor.component';
 import { LinearRegressionComponent } from './linear-regression/linear-regression.component';
@@ -52,7 +55,10 @@ import { LinearLearnerComponent } from './linear-learner/linear-learner.componen
     MatCheckboxModule,
     MatRadioModule,
     MatTableModule,
-    MatInputModule
+    MatInputModule,
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts')
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
