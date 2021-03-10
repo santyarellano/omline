@@ -1,3 +1,12 @@
 mat-label {
     font-size: large;
 }
+
+mat-form-field {
+    margin: 8px;
+}
+
+#form-elements {
+    display: flex;
+    flex-wrap: wrap;
+}
