@@ -59,7 +59,7 @@
 
     <br>
 
-    <button id="run_btn" (click)="run()" mat-flat-button color="accent"
+    <button style="margin-bottom: 10px;" id="run_btn" (click)="run()" mat-flat-button color="accent"
         [disabled]="running && valid_params">Run</button>
 
     <mat-progress-bar style="margin-top: 10px; margin-bottom: 10px;" *ngIf="running == true" mode="indeterminate">

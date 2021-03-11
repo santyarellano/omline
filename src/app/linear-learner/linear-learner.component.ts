@@ -19,6 +19,7 @@ export interface Feature {
 export class LinearLearnerComponent implements OnInit {
   epochs_limit = 20000;
   error_limit = 5;
+  ms_per_epoch = 1;
   learning_rate = 0.33;
   running = false;
   show_process = false;
@@ -73,8 +74,19 @@ export class LinearLearnerComponent implements OnInit {
       this.feature.subfeatures.push(auxFeature);
     });
     this.setAll(true);
+  }
 
-    // Run learning every 100ms
+  run() {
+    this.running = true;
+    this.show_process = true;
+    document.getElementById("run_btn").innerText = "Running...";
+
+    // reset values
+    this.mse = 100;
+    this.mse_history = [];
+    this.current_epoch = 0;
+
+    // Run learning every N ms
     this.timer = setInterval(() => {
       this.Epoch();
 
@@ -91,16 +103,10 @@ export class LinearLearnerComponent implements OnInit {
       // stop if limits reached
       if (this.mse <= this.error_limit || this.current_epoch >= this.epochs_limit) {
         clearInterval(this.timer);
+        this.running = false;
+        document.getElementById("run_btn").innerText = "Run";
       }
-    }, 100);
-
-
-  }
-
-  run() {
-    this.running = true;
-    this.show_process = true;
-    document.getElementById("run_btn").innerText = "Running...";
+    }, this.ms_per_epoch);
   }
 
   updateAllFeaturesSelected() {
@@ -135,6 +141,7 @@ export class LinearLearnerComponent implements OnInit {
   }
 
   Epoch() {
+    // do stuff updates
     this.mse_history.push(this.mse);
     this.mse *= .98;
     this.current_epoch++;
