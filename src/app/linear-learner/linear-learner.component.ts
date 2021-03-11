@@ -39,6 +39,7 @@ export class LinearLearnerComponent implements OnInit {
   mse = 100;
   mse_history = [];
   current_epoch = 0;
+  params = {};
 
   updateOptions: any;
   timer: any;
@@ -100,12 +101,6 @@ export class LinearLearnerComponent implements OnInit {
         }]
       };
 
-      // stop if limits reached
-      if (this.mse <= this.error_limit || this.current_epoch >= this.epochs_limit) {
-        clearInterval(this.timer);
-        this.running = false;
-        document.getElementById("run_btn").innerText = "Run";
-      }
     }, this.ms_per_epoch);
   }
 
@@ -140,11 +135,45 @@ export class LinearLearnerComponent implements OnInit {
     this.predict_feature = this.selected_features[0];
   }
 
+  Hypothesys() {
+    return 1;
+  }
+
+  GradientDescent() {
+    return 1;
+  }
+
+  Scaling() {
+    return 1;
+  }
+
+  // TO-DO: apply epoch algorithm
   Epoch() {
-    // do stuff updates
+    /* 
+      1. Capture old params
+      2. Calculate new params with Gradient Descent
+      3. Stop when local mimima is found (limits reached or no further improvement)
+    */
+
+    // ---- MOCK ----
     this.mse_history.push(this.mse);
     this.mse *= .98;
     this.current_epoch++;
+    // ---- MOCK ----
+
+    // Capture old params
+    var old_params = this.params;
+
+    // Calculate new params with Gradient Descent
+    this.params = this.GradientDescent();
+
+    // Stop when local mimima is found (limits reached or no further improvement)
+    // TO-DO: stop also when no further improvement (old_params == params)
+    if (this.mse <= this.error_limit || this.current_epoch >= this.epochs_limit) {
+      clearInterval(this.timer);
+      this.running = false;
+      document.getElementById("run_btn").innerText = "Run";
+    }
   }
 
 }
