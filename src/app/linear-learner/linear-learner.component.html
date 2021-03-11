@@ -6,7 +6,7 @@
     <div class="grid-container">
         <mat-form-field>
             <mat-label>Maximum amount of epochs</mat-label>
-            <input matInput type="number" [(ngModel)]="epochs_amount" placeholder="# of Epochs">
+            <input matInput type="number" [(ngModel)]="epochs_limit" placeholder="# of Epochs">
         </mat-form-field>
         <br>
         <mat-form-field>
@@ -67,6 +67,6 @@
 
     <!-- Process Elements -->
     <div *ngIf="show_process == true">
-
+        <div echarts [options]="mse_chart_options" [merge]="updateOptions" class="demo-chart"></div>
     </div>
 </mat-card>
