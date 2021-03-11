@@ -19,7 +19,7 @@ export interface Feature {
 export class LinearLearnerComponent implements OnInit {
   epochs_limit = 20000;
   error_limit = 5;
-  ms_per_epoch = 1;
+  ms_per_epoch = 50;
   learning_rate = 0.33;
   running = false;
   show_process = false;
@@ -86,6 +86,12 @@ export class LinearLearnerComponent implements OnInit {
     this.mse = 100;
     this.mse_history = [];
     this.current_epoch = 0;
+
+    // Set params to random starting values
+    this.params = {};
+    this.selected_features.forEach((feature) => {
+      this.params[feature] = Math.random() * 100;
+    });
 
     // Run learning every N ms
     this.timer = setInterval(() => {

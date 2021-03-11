@@ -62,11 +62,11 @@
     <button style="margin-bottom: 10px;" id="run_btn" (click)="run()" mat-flat-button color="accent"
         [disabled]="running && valid_params">Run</button>
 
-    <mat-progress-bar style="margin-top: 10px; margin-bottom: 10px;" *ngIf="running == true" mode="indeterminate">
-    </mat-progress-bar>
-
     <!-- Process Elements -->
     <div *ngIf="show_process == true">
         <div echarts [options]="mse_chart_options" [merge]="updateOptions" class="demo-chart"></div>
     </div>
+
+    <mat-progress-bar style="margin-top: 10px;" *ngIf="running == true" mode="indeterminate">
+    </mat-progress-bar>
 </mat-card>
