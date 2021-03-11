@@ -21,6 +21,8 @@ export class LinearLearnerComponent implements OnInit {
   error_limit = 5;
   ms_per_epoch = 50;
   learning_rate = 0.33;
+  training_proportion = 70;
+  testing_proportion = 100 - this.training_proportion;
   running = false;
   show_process = false;
   valid_params = true;
@@ -40,6 +42,8 @@ export class LinearLearnerComponent implements OnInit {
   mse_history = [];
   current_epoch = 0;
   params = {};
+  training_set = [];
+  testing_set = [];
 
   updateOptions: any;
   timer: any;
@@ -92,6 +96,9 @@ export class LinearLearnerComponent implements OnInit {
     this.selected_features.forEach((feature) => {
       this.params[feature] = Math.random() * 100;
     });
+
+    // Get training & testing sets
+    this.testing_proportion = 100 - this.training_proportion;
 
     // Run learning every N ms
     this.timer = setInterval(() => {
@@ -171,11 +178,10 @@ export class LinearLearnerComponent implements OnInit {
     var old_params = this.params;
 
     // Calculate new params with Gradient Descent
-    this.params = this.GradientDescent();
+    //this.params = this.GradientDescent();
 
     // Stop when local mimima is found (limits reached or no further improvement)
-    // TO-DO: stop also when no further improvement (old_params == params)
-    if (this.mse <= this.error_limit || this.current_epoch >= this.epochs_limit) {
+    if (this.mse <= this.error_limit || this.current_epoch >= this.epochs_limit || old_params === this.params) {
       clearInterval(this.timer);
       this.running = false;
       document.getElementById("run_btn").innerText = "Run";
