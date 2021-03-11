@@ -26,4 +26,24 @@ export class PreprocessorServiceService {
     this.data_uploaded = true;
     return this.data;
   }
+
+  splitDataSets(test_percentage, train_percentage, labels_to_analyze) {
+    // get total dataset
+    var trainSet = [];
+    var testSet = [];
+
+    this.data.forEach(column => {
+
+    });
+  }
+
+  // returns obj without unwanted features
+  getFilteredObj(obj, labels) {
+    var ret = {};
+    labels.forEach(label => {
+      ret[label] = obj[label];
+    });
+
+    return ret;
+  }
 }
