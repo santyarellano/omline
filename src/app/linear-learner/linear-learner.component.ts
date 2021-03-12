@@ -19,7 +19,7 @@ export interface Feature {
 export class LinearLearnerComponent implements OnInit {
   epochs_limit = 20000;
   error_limit = 5;
-  ms_per_epoch = 10;
+  ms_per_epoch = 5;
   learning_rate = 0.01;
   training_proportion = 75;
   testing_proportion = 100 - this.training_proportion;
@@ -216,6 +216,8 @@ export class LinearLearnerComponent implements OnInit {
       clearInterval(this.timer);
       this.running = false;
       document.getElementById("run_btn").innerText = "Run";
+
+      console.log(this.params);
     }
 
     this.current_epoch++;
