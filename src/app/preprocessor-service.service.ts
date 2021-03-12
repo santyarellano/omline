@@ -27,14 +27,22 @@ export class PreprocessorServiceService {
     return this.data;
   }
 
-  splitDataSets(test_percentage, train_percentage, labels_to_analyze) {
+  splitDataSets(train_percentage, labels_to_analyze) {
     // get total dataset
     var trainSet = [];
     var testSet = [];
 
-    this.data.forEach(column => {
-
+    // filter unwanted data
+    this.data.forEach(instance => {
+      instance = this.getFilteredObj(instance, labels_to_analyze);
+      testSet.push(instance);
     });
+
+    // split set in two parts acording to percentage
+    var to_split = Math.floor(testSet.length * (train_percentage / 100));
+    trainSet = testSet.splice(0, to_split);
+
+    return [trainSet, testSet];
   }
 
   // returns obj without unwanted features

@@ -99,7 +99,9 @@ export class LinearLearnerComponent implements OnInit {
 
     // Get training & testing sets
     this.testing_proportion = 100 - this.training_proportion;
-    var splitSet = this.prep_service.splitDataSets(this.testing_proportion, this.training_proportion, this.selected_features);
+    var splitSet = this.prep_service.splitDataSets(this.training_proportion, this.selected_features);
+    this.training_set = splitSet[0];
+    this.testing_set = splitSet[1];
 
     // Run learning every N ms
     this.timer = setInterval(() => {
