@@ -19,9 +19,9 @@ export interface Feature {
 export class LinearLearnerComponent implements OnInit {
   epochs_limit = 20000;
   error_limit = 5;
-  ms_per_epoch = 50;
-  learning_rate = 0.33;
-  training_proportion = 70;
+  ms_per_epoch = 10;
+  learning_rate = 0.01;
+  training_proportion = 75;
   testing_proportion = 100 - this.training_proportion;
   running = false;
   show_process = false;
@@ -94,7 +94,9 @@ export class LinearLearnerComponent implements OnInit {
     // Set params to random starting values
     this.params = {};
     this.selected_features.forEach((feature) => {
-      this.params[feature] = Math.random() * 100;
+      if (feature != this.predict_feature) {
+        this.params[feature] = Math.random() * 100;
+      }
     });
 
     // Get training & testing sets
@@ -103,9 +105,12 @@ export class LinearLearnerComponent implements OnInit {
     this.training_set = splitSet[0];
     this.testing_set = splitSet[1];
 
+    this.updateMSE();
+
     // Run learning every N ms
     this.timer = setInterval(() => {
       this.Epoch();
+      this.updateMSE();
 
       // update series data:
       this.updateOptions = {
@@ -151,37 +156,60 @@ export class LinearLearnerComponent implements OnInit {
     this.predict_feature = this.selected_features[0];
   }
 
-  Hypothesys() {
-    return 1;
+  // Evaluates the current hypothesis and returns the result
+  hypothesys(sample) {
+    var acum = 0;
+    for (var key in sample) {
+      if (key != this.predict_feature) {
+        //console.log(key, sample[key]);
+        acum += this.params[key] * sample[key];
+      }
+    }
+
+    return acum;
   }
 
+  // Gradient Descent algorithm
   GradientDescent() {
-    return 1;
+    var temp = Object.assign({}, this.params);
+
+    for (var key in this.params) {
+      var acum = 0;
+
+      this.training_set.forEach(instance => {
+        var error = this.hypothesys(instance) - instance[this.predict_feature];
+        acum += error * instance[key];
+      });
+
+      temp[key] = this.params[key] - this.learning_rate * (1 / this.training_set.length) * acum;
+    }
+
+    return temp;
   }
 
   Scaling() {
     return 1;
   }
 
-  // TO-DO: apply epoch algorithm
-  Epoch() {
-    /* 
-      1. Capture old params
-      2. Calculate new params with Gradient Descent
-      3. Stop when local mimima is found (limits reached or no further improvement)
-    */
+  updateMSE() {
+    var error_acum = 0;
 
-    // ---- MOCK ----
+    this.training_set.forEach(instance => {
+      var hyp = this.hypothesys(instance);
+      var error = hyp - instance[this.predict_feature];
+      error_acum += Math.pow(error, 2);
+    });
+
+    this.mse = error_acum / this.training_set.length;
     this.mse_history.push(this.mse);
-    this.mse *= .98;
-    this.current_epoch++;
-    // ---- MOCK ----
+  }
 
+  Epoch() {
     // Capture old params
-    var old_params = this.params;
+    var old_params = Object.assign({}, this.params);
 
     // Calculate new params with Gradient Descent
-    //this.params = this.GradientDescent();
+    this.params = this.GradientDescent();
 
     // Stop when local mimima is found (limits reached or no further improvement)
     if (this.mse <= this.error_limit || this.current_epoch >= this.epochs_limit || old_params === this.params) {
@@ -189,6 +217,8 @@ export class LinearLearnerComponent implements OnInit {
       this.running = false;
       document.getElementById("run_btn").innerText = "Run";
     }
+
+    this.current_epoch++;
   }
 
 }
