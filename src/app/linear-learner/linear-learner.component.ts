@@ -17,15 +17,18 @@ export interface Feature {
   styleUrls: ['./linear-learner.component.css']
 })
 export class LinearLearnerComponent implements OnInit {
-  epochs_limit = 20000;
-  error_limit = 5;
-  ms_per_epoch = 5;
-  learning_rate = 0.01;
+  epochs_limit = 5000;
+  error_limit = 1;
+  ms_per_epoch = 1;
+  learning_rate = 0.033;
   training_proportion = 75;
   testing_proportion = 100 - this.training_proportion;
   running = false;
   show_process = false;
   valid_params = true;
+  show_test = false;
+  accuracy = 0;
+  show_model = false;
 
   feature: Feature = {
     name: 'Features to analyze',
@@ -44,6 +47,9 @@ export class LinearLearnerComponent implements OnInit {
   params = {};
   training_set = [];
   testing_set = [];
+  param_keys = [];
+  test_result = 0;
+  test_model = {};
 
   updateOptions: any;
   timer: any;
@@ -84,6 +90,8 @@ export class LinearLearnerComponent implements OnInit {
   run() {
     this.running = true;
     this.show_process = true;
+    this.show_model = false;
+    this.show_test = false;
     document.getElementById("run_btn").innerText = "Running...";
 
     // reset values
@@ -95,7 +103,7 @@ export class LinearLearnerComponent implements OnInit {
     this.params = {};
     this.selected_features.forEach((feature) => {
       if (feature != this.predict_feature) {
-        this.params[feature] = Math.random() * 100;
+        this.params[feature] = Math.random() * 10;
       }
     });
 
@@ -106,6 +114,7 @@ export class LinearLearnerComponent implements OnInit {
     this.testing_set = splitSet[1];
 
     this.updateMSE();
+    this.scale();
 
     // Run learning every N ms
     this.timer = setInterval(() => {
@@ -161,7 +170,6 @@ export class LinearLearnerComponent implements OnInit {
     var acum = 0;
     for (var key in sample) {
       if (key != this.predict_feature) {
-        //console.log(key, sample[key]);
         acum += this.params[key] * sample[key];
       }
     }
@@ -187,8 +195,8 @@ export class LinearLearnerComponent implements OnInit {
     return temp;
   }
 
-  Scaling() {
-    return 1;
+  scale() {
+    // Maybe one day I'll do this ...
   }
 
   updateMSE() {
@@ -214,13 +222,35 @@ export class LinearLearnerComponent implements OnInit {
     // Stop when local mimima is found (limits reached or no further improvement)
     if (this.mse <= this.error_limit || this.current_epoch >= this.epochs_limit || old_params === this.params) {
       clearInterval(this.timer);
-      this.running = false;
-      document.getElementById("run_btn").innerText = "Run";
-
-      console.log(this.params);
+      this.run_test();
+      this.show_test = true;
     }
 
     this.current_epoch++;
+  }
+
+  run_test() {
+    var error_acum = 0;
+    for (var i = 0; i < this.testing_set.length - 1; i++) {
+      var hyp = this.hypothesys(this.testing_set[i]);
+      var error = hyp - this.testing_set[i][this.predict_feature];
+      error_acum += Math.pow(error, 2);
+    }
+    var avg_error = error_acum / this.testing_set.length
+    this.accuracy = 100 - avg_error;
+    this.running = false;
+    document.getElementById("run_btn").innerText = "Run";
+
+    // Show model
+    for (var key in this.params) {
+      this.test_model[key] = 0;
+    }
+    this.param_keys = Object.keys(this.params);
+    this.show_model = true;
+  }
+
+  update_model() {
+    this.test_result = this.hypothesys(this.test_model);
   }
 
 }

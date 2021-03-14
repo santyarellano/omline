@@ -67,6 +67,22 @@
         <div echarts [options]="mse_chart_options" [merge]="updateOptions" class="demo-chart"></div>
     </div>
 
+    <div *ngIf="show_test == true">
+        <h3>Acurracy after tests: {{ accuracy }}%</h3>
+    </div>
+
     <mat-progress-bar style="margin-top: 10px;" *ngIf="running == true" mode="indeterminate">
     </mat-progress-bar>
+</mat-card>
+
+<br>
+
+<mat-card *ngIf="show_model == true">
+    <mat-card-title>Model</mat-card-title>
+    <mat-form-field *ngFor="let p of param_keys">
+        <mat-label>{{p}}</mat-label>
+        <input matInput type="number" placeholder="{{p}}" [(ngModel)]="test_model[p]" (ngModelChange)="update_model()">
+    </mat-form-field>
+
+    <h2>{{ predict_feature }}: {{ test_result }}</h2>
 </mat-card>
