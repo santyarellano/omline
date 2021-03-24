@@ -106,6 +106,9 @@ export class LinearLearnerComponent implements OnInit {
         this.params[feature] = Math.random() * 10;
       }
     });
+    this.params["bias"] = Math.random() * 10;
+
+    console.log(this.params);
 
     // Get training & testing sets
     this.testing_proportion = 100 - this.training_proportion;
@@ -174,6 +177,8 @@ export class LinearLearnerComponent implements OnInit {
       }
     }
 
+    acum += this.params["bias"];
+
     return acum;
   }
 
@@ -184,9 +189,14 @@ export class LinearLearnerComponent implements OnInit {
     for (var key in this.params) {
       var acum = 0;
 
+
+
       this.training_set.forEach(instance => {
         var error = this.hypothesys(instance) - instance[this.predict_feature];
-        acum += error * instance[key];
+        if (key != "bias")
+          acum += error * instance[key];
+        else
+          acum += error;
       });
 
       temp[key] = this.params[key] - this.learning_rate * (1 / this.training_set.length) * acum;
@@ -226,8 +236,8 @@ export class LinearLearnerComponent implements OnInit {
       this.show_test = true;
     }
 
-    // Stop if error is growing
-    if (this.mse_history.length > 5 && this.mse_history[this.mse_history.length - 1] > this.mse_history[this.mse_history.length - 2]) {
+    // Stop if error is growing or if nan
+    if ((this.mse_history.length > 5 && this.mse_history[this.mse_history.length - 1] > this.mse_history[this.mse_history.length - 2]) || isNaN(this.mse)) {
       clearInterval(this.timer);
       this.run_test();
       this.show_test = true;
@@ -253,6 +263,8 @@ export class LinearLearnerComponent implements OnInit {
       this.test_model[key] = 0;
     }
     this.param_keys = Object.keys(this.params);
+
+    this.update_model();
     this.show_model = true;
   }
 
