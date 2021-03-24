@@ -60,7 +60,7 @@
     <br>
 
     <button style="margin-bottom: 10px;" id="run_btn" (click)="run()" mat-flat-button color="accent"
-        [disabled]="running && valid_params">Run</button>
+        [disabled]="running">Run</button>
 
     <!-- Process Elements -->
     <div *ngIf="show_process == true">
@@ -79,10 +79,15 @@
 
 <mat-card *ngIf="show_model == true">
     <mat-card-title>Model</mat-card-title>
-    <mat-form-field *ngFor="let p of param_keys">
-        <mat-label>{{p}}</mat-label>
-        <input matInput type="number" placeholder="{{p}}" [(ngModel)]="test_model[p]" (ngModelChange)="update_model()">
-    </mat-form-field>
+    <div *ngFor="let p of param_keys">
+        <mat-form-field *ngIf="p != 'bias'">
+
+            <mat-label>{{p}}</mat-label>
+            <input matInput type="number" placeholder="{{p}}" [(ngModel)]="test_model[p]"
+                (ngModelChange)="update_model()">
+
+        </mat-form-field>
+    </div>
 
     <h2>{{ predict_feature }}: {{ test_result }}</h2>
 </mat-card>

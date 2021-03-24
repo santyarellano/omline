@@ -25,7 +25,6 @@ export class LinearLearnerComponent implements OnInit {
   testing_proportion = 100 - this.training_proportion;
   running = false;
   show_process = false;
-  valid_params = true;
   show_test = false;
   accuracy = 0;
   show_model = false;
@@ -107,8 +106,6 @@ export class LinearLearnerComponent implements OnInit {
       }
     });
     this.params["bias"] = Math.random() * 10;
-
-    console.log(this.params);
 
     // Get training & testing sets
     this.testing_proportion = 100 - this.training_proportion;
