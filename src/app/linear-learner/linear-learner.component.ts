@@ -226,6 +226,13 @@ export class LinearLearnerComponent implements OnInit {
       this.show_test = true;
     }
 
+    // Stop if error is growing
+    if (this.mse_history.length > 5 && this.mse_history[this.mse_history.length - 1] > this.mse_history[this.mse_history.length - 2]) {
+      clearInterval(this.timer);
+      this.run_test();
+      this.show_test = true;
+    }
+
     this.current_epoch++;
   }
 
