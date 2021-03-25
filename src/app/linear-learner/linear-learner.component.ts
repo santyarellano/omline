@@ -17,7 +17,7 @@ export interface Feature {
   styleUrls: ['./linear-learner.component.css']
 })
 export class LinearLearnerComponent implements OnInit {
-  epochs_limit = 5000;
+  epochs_limit = 1000;
   error_limit = 1;
   ms_per_epoch = 1;
   learning_rate = 0.033;
@@ -114,7 +114,11 @@ export class LinearLearnerComponent implements OnInit {
     this.testing_set = splitSet[1];
 
     this.updateMSE();
-    this.scale();
+
+    // fix normalization
+    /*console.log(this.training_set[0]);
+    this.normalize(this.training_set);
+    console.log(this.training_set[0]);*/
 
     // Run learning every N ms
     this.timer = setInterval(() => {
@@ -202,8 +206,29 @@ export class LinearLearnerComponent implements OnInit {
     return temp;
   }
 
-  scale() {
-    // Maybe one day I'll do this ...
+  getMaxJson(obj: JSON) {
+    var ret = null;
+    for (var key in obj) {
+      if (ret == null) ret = obj[key];
+      ret = (obj[key] > ret) ? obj[key] : ret;
+    }
+
+    return ret;
+  }
+
+  // To-do: fix so user model can be used.
+  normalize(set) {
+    var acum: number = 0;
+    set.forEach(sample => {
+      for (var key in sample) {
+        acum += +sample[key];
+      }
+      var avg = acum / Object.keys(sample).length;
+      var max_val = +this.getMaxJson(sample);
+      for (var key in sample) {
+        sample[key] = (sample[key] - avg) / max_val;
+      }
+    });
   }
 
   updateMSE() {
