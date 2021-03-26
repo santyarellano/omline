@@ -261,7 +261,12 @@ export class LinearLearnerComponent implements OnInit {
   }
 
   update_model() {
-    this.test_result = this.hypothesys(this.test_model);
+    var temp_model = Object.assign({}, this.test_model);
+    temp_model = this.prep_service.normalizeElement(temp_model);
+    temp_model["bias"] = 1;
+    var hyp = this.hypothesys(temp_model);
+    hyp = this.prep_service.denormalizeResult(hyp, this.predict_feature);
+    this.test_result = hyp;
   }
 
 }
