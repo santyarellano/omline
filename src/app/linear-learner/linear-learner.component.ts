@@ -115,11 +115,6 @@ export class LinearLearnerComponent implements OnInit {
 
     this.updateMSE();
 
-    // fix normalization
-    /*console.log(this.training_set[0]);
-    this.normalize(this.training_set);
-    console.log(this.training_set[0]);*/
-
     // Run learning every N ms
     this.timer = setInterval(() => {
       this.Epoch();
@@ -204,31 +199,6 @@ export class LinearLearnerComponent implements OnInit {
     }
 
     return temp;
-  }
-
-  getMaxJson(obj: JSON) {
-    var ret = null;
-    for (var key in obj) {
-      if (ret == null) ret = obj[key];
-      ret = (obj[key] > ret) ? obj[key] : ret;
-    }
-
-    return ret;
-  }
-
-  // To-do: fix so user model can be used.
-  normalize(set) {
-    var acum: number = 0;
-    set.forEach(sample => {
-      for (var key in sample) {
-        acum += +sample[key];
-      }
-      var avg = acum / Object.keys(sample).length;
-      var max_val = +this.getMaxJson(sample);
-      for (var key in sample) {
-        sample[key] = (sample[key] - avg) / max_val;
-      }
-    });
   }
 
   updateMSE() {
