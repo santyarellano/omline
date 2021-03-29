@@ -23,6 +23,7 @@ import { MatInputModule } from '@angular/material/input';
 
 // OTHER LIBS
 import { NgxEchartsModule } from 'ngx-echarts';
+import { NgxGoogleAnalyticsModule, NgxGoogleAnalyticsRouterModule } from 'ngx-google-analytics';
 
 // COMPONENTS
 import { PreprocessorComponent } from './preprocessor/preprocessor.component';
@@ -58,7 +59,9 @@ import { LinearLearnerComponent } from './linear-learner/linear-learner.componen
     MatInputModule,
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts')
-    })
+    }),
+    NgxGoogleAnalyticsModule.forRoot('G-8LWVYHYTF4'),
+    NgxGoogleAnalyticsRouterModule
   ],
   providers: [],
   bootstrap: [AppComponent]
