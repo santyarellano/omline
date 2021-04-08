@@ -81,12 +81,12 @@
     <mat-card-title>Real Values vs. Hypothesis</mat-card-title>
     <!-- training set chart -->
     <div>
-        <div echarts [options]="training_chart_options" [merge]="training_chart_options" class="demo-chart"></div>
+        <div echarts [options]="training_chart_options" [merge]="trainingPlotOptions" class="demo-chart"></div>
     </div>
 
     <!-- testing set chart -->
     <div>
-        <div echarts [options]="testing_chart_options" class="demo-chart"></div>
+        <div echarts [options]="testing_chart_options" [merge]="testingPlotOptions" class="demo-chart"></div>
     </div>
 </mat-card>
 

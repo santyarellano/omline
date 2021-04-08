@@ -52,7 +52,7 @@ export class LinearLearnerComponent implements OnInit {
 
   training_plot_real = [];
   training_plot_hyp = [];
-  training_plot_options: any;
+  trainingPlotOptions: any;
   training_chart_options: EChartsOption = {
     title: {
       text: `Training Set`
@@ -79,7 +79,7 @@ export class LinearLearnerComponent implements OnInit {
 
   testing_plot_real = [];
   testing_plot_hyp = [];
-  testing_plot_options: any;
+  testingPlotOptions: any;
   testing_chart_options: EChartsOption = {
     title: {
       text: `Testing Set`
@@ -149,6 +149,44 @@ export class LinearLearnerComponent implements OnInit {
     this.mse = 100;
     this.mse_history = [];
     this.current_epoch = 0;
+    this.training_plot_hyp = [];
+    this.training_plot_real = [];
+    this.testing_plot_hyp = [];
+    this.testing_plot_real = [];
+    this.trainingPlotOptions = {
+      title: {
+        text: `Training Set`
+      },
+      series: [
+        {
+          name: 'Real Values',
+          data: this.training_plot_real,
+          type: 'line',
+        },
+        {
+          name: 'Hypothesis',
+          data: this.training_plot_hyp,
+          type: 'line',
+        },
+      ]
+    };
+    this.testingPlotOptions = {
+      title: {
+        text: `Testing Set`
+      },
+      series: [
+        {
+          name: 'Real Values',
+          data: this.testing_plot_real,
+          type: 'line',
+        },
+        {
+          name: 'Hypothesis',
+          data: this.testing_plot_hyp,
+          type: 'line',
+        },
+      ]
+    };
 
     // Set params to random starting values
     this.params = {};
@@ -292,7 +330,6 @@ export class LinearLearnerComponent implements OnInit {
   }
 
   GetTrainingPlot() {
-    var update = (this.training_plot_hyp.length == 0) ? false : true;
 
     this.training_set.forEach(instance => {
       var hyp = this.prep_service.denormalizeResult(this.hypothesys(instance), this.predict_feature);
@@ -301,32 +338,9 @@ export class LinearLearnerComponent implements OnInit {
       this.training_plot_hyp.push(hyp);
       this.training_plot_real.push(real);
     });
-
-
-    // update series data:
-    if (update) {
-      this.training_chart_options = {
-        title: {
-          text: `Training Set`
-        },
-        series: [
-          {
-            data: this.training_plot_real,
-            type: 'line'
-          },
-          {
-            data: this.training_plot_hyp,
-            type: 'line'
-          },
-        ]
-      };
-    }
-
   }
 
   GetTestingPlot() {
-    this.testing_plot_real = [];
-    this.testing_plot_hyp = [];
 
     this.testing_set.forEach(instance => {
       var hyp = this.prep_service.denormalizeResult(this.hypothesys(instance), this.predict_feature);
