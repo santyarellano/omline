@@ -77,17 +77,29 @@
 
 <!-- Comparations Sets Charts -->
 <br>
-<mat-card *ngIf="show_model == true">
+<mat-card *ngIf="show_model == true" style="text-align: center;">
     <mat-card-title>Real Values vs. Hypothesis</mat-card-title>
     <!-- training set chart -->
     <div>
         <div echarts [options]="training_chart_options" [merge]="trainingPlotOptions" class="demo-chart"></div>
     </div>
+    <h3 style="margin-bottom: 2rem;">
+        Accuracy (Average): <strong>{{training_accuracy}}%</strong>
+    </h3>
 
     <!-- testing set chart -->
+    <hr>
+    <br>
     <div>
         <div echarts [options]="testing_chart_options" [merge]="testingPlotOptions" class="demo-chart"></div>
     </div>
+    <h3>
+        Accuracy (Average): <strong>{{ testing_accuracy }}%</strong>
+    </h3>
+
+    <br>
+    <br>
+    <h2>Accuracy Difference: <strong>{{ accuracy_diff }}</strong></h2>
 </mat-card>
 
 <!-- USER MODEL -->

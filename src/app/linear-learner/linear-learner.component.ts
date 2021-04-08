@@ -26,7 +26,6 @@ export class LinearLearnerComponent implements OnInit {
   running = false;
   show_process = false;
   show_test = false;
-  accuracy = 0;
   show_model = false;
 
   feature: Feature = {
@@ -50,6 +49,7 @@ export class LinearLearnerComponent implements OnInit {
   test_result = 0;
   test_model = {};
 
+  training_accuracy = 0;
   training_plot_real = [];
   training_plot_hyp = [];
   trainingPlotOptions: any;
@@ -81,6 +81,7 @@ export class LinearLearnerComponent implements OnInit {
     ],
   };
 
+  testing_accuracy = 0;
   testing_plot_real = [];
   testing_plot_hyp = [];
   testingPlotOptions: any;
@@ -108,6 +109,8 @@ export class LinearLearnerComponent implements OnInit {
       },
     ],
   };
+
+  accuracy_diff = 0;
 
   updateOptions: any;
   timer: any;
@@ -160,6 +163,8 @@ export class LinearLearnerComponent implements OnInit {
     this.training_plot_real = [];
     this.testing_plot_hyp = [];
     this.testing_plot_real = [];
+    this.testing_accuracy = 0;
+    this.training_accuracy = 0;
     this.trainingPlotOptions = {
       title: {
         text: `Training Set`
@@ -216,11 +221,12 @@ export class LinearLearnerComponent implements OnInit {
     this.timer = setInterval(() => {
       this.Epoch();
       this.updateMSE();
+      var rounded = this.mse.toFixed(2);
 
       // update series data:
       this.updateOptions = {
         title: {
-          text: `Error: ${this.mse}%\nEpoch: ${this.current_epoch}`
+          text: `Mean Square Error: ${rounded}%\nEpoch: ${this.current_epoch}`
         },
         series: [{
           data: this.mse_history
@@ -337,6 +343,7 @@ export class LinearLearnerComponent implements OnInit {
   }
 
   GetTrainingPlot() {
+    var accuracy_sum = 0;
 
     this.training_set.forEach(instance => {
       var hyp = this.prep_service.denormalizeResult(this.hypothesys(instance), this.predict_feature);
@@ -344,10 +351,18 @@ export class LinearLearnerComponent implements OnInit {
 
       this.training_plot_hyp.push(hyp);
       this.training_plot_real.push(real);
+
+      // get accuracy
+      var _error = Math.abs(100 - ((hyp * 100) / real));
+      accuracy_sum += 100 - _error;
     });
+
+    var accur = accuracy_sum / this.training_set.length;
+    this.training_accuracy = +accur.toFixed(2);
   }
 
   GetTestingPlot() {
+    var accuracy_sum = 0;
 
     this.testing_set.forEach(instance => {
       var hyp = this.prep_service.denormalizeResult(this.hypothesys(instance), this.predict_feature);
@@ -355,7 +370,14 @@ export class LinearLearnerComponent implements OnInit {
 
       this.testing_plot_hyp.push(hyp);
       this.testing_plot_real.push(real);
+
+      // get accuracy
+      var _error = Math.abs(100 - ((hyp * 100) / real));
+      accuracy_sum += 100 - _error;
     });
+
+    var accur = accuracy_sum / this.testing_set.length;
+    this.testing_accuracy = +accur.toFixed(2);
   }
 
   run_test() {
@@ -365,14 +387,15 @@ export class LinearLearnerComponent implements OnInit {
       var error = hyp - this.testing_set[i][this.predict_feature];
       error_acum += Math.pow(error, 2);
     }
-    var avg_error = error_acum / this.testing_set.length
-    this.accuracy = 100 - avg_error;
+    var avg_error = error_acum / this.testing_set.length;
     this.running = false;
     document.getElementById("run_btn").innerText = "Run";
 
     // Plot comparations
     this.GetTrainingPlot();
     this.GetTestingPlot();
+    this.accuracy_diff = Math.abs(this.training_accuracy - this.testing_accuracy);
+    this.accuracy_diff = +this.accuracy_diff.toFixed(3);
 
     // Show model
     for (var key in this.params) {
