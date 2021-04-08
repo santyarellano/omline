@@ -17,8 +17,8 @@ export interface Feature {
   styleUrls: ['./linear-learner.component.css']
 })
 export class LinearLearnerComponent implements OnInit {
-  epochs_limit = 10000;
-  error_limit = 100;
+  epochs_limit = 5000;
+  error_limit = 1;
   ms_per_epoch = 1;
   learning_rate = 0.033;
   training_proportion = 75;

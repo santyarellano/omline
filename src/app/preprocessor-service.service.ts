@@ -56,6 +56,25 @@ export class PreprocessorServiceService {
     return [acum, max, min];
   }
 
+  shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+
+    return array;
+  }
+
   normalizeElement(element) {
     for (var key in element) {
       element[key] = (element[key] - this.means[key]) / (this.maxs[key] - this.mins[key]);
@@ -99,6 +118,9 @@ export class PreprocessorServiceService {
 
     // remove last instance as it is empty by default always
     testSet.pop();
+
+    // Shuffle data set
+    this.shuffle(testSet);
 
     // Normalize so that gradient descent can converge (using whole set)
     testSet = this.normalizeByAvg(testSet);
