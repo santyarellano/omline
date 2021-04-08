@@ -18,7 +18,7 @@ export interface Feature {
 })
 export class LinearLearnerComponent implements OnInit {
   epochs_limit = 10000;
-  error_limit = 1;
+  error_limit = 100;
   ms_per_epoch = 1;
   learning_rate = 0.033;
   training_proportion = 75;
@@ -57,6 +57,9 @@ export class LinearLearnerComponent implements OnInit {
     title: {
       text: `Training Set`
     },
+    legend: {
+      data: ['Real Values', 'Hypothesis']
+    },
     xAxis: {
       type: 'category',
     },
@@ -66,6 +69,7 @@ export class LinearLearnerComponent implements OnInit {
     series: [
       {
         name: 'Real Values',
+        showSymbol: true,
         data: this.training_plot_real,
         type: 'line',
       },
@@ -83,6 +87,9 @@ export class LinearLearnerComponent implements OnInit {
   testing_chart_options: EChartsOption = {
     title: {
       text: `Testing Set`
+    },
+    legend: {
+      data: ['Real Values', 'Hypothesis']
     },
     xAxis: {
       type: 'category',
