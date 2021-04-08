@@ -62,21 +62,36 @@
     <button style="margin-bottom: 10px;" id="run_btn" (click)="run()" mat-flat-button color="accent"
         [disabled]="running">Run</button>
 
-    <!-- Process Elements -->
+    <!-- Process Elements. Error Chart -->
     <div *ngIf="show_process == true">
         <div echarts [options]="mse_chart_options" [merge]="updateOptions" class="demo-chart"></div>
     </div>
 
-    <div *ngIf="show_test == true">
+    <!--<div *ngIf="show_test == true">
         <h3>Acurracy after tests: {{ accuracy }}%</h3>
-    </div>
+    </div>-->
 
     <mat-progress-bar style="margin-top: 10px;" *ngIf="running == true" mode="indeterminate">
     </mat-progress-bar>
 </mat-card>
 
+<!-- Comparations Sets Charts -->
 <br>
+<mat-card *ngIf="show_model == true">
+    <mat-card-title>Real Values vs. Hypothesis</mat-card-title>
+    <!-- training set chart -->
+    <div>
+        <div echarts [options]="training_chart_options" [merge]="training_chart_options" class="demo-chart"></div>
+    </div>
 
+    <!-- testing set chart -->
+    <div>
+        <div echarts [options]="testing_chart_options" class="demo-chart"></div>
+    </div>
+</mat-card>
+
+<!-- USER MODEL -->
+<br>
 <mat-card *ngIf="show_model == true">
     <mat-card-title>Model</mat-card-title>
     <div *ngFor="let p of param_keys">
