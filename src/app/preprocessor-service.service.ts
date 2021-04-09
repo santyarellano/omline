@@ -14,6 +14,37 @@ export class PreprocessorServiceService {
 
   constructor() { }
 
+  OneHotEncoding(set) {
+    // Find non-numerical features
+    for (var field in set[0]) {
+      if (isNaN(set[0][field])) {
+        // get all classes of this field
+        var classes = [];
+        for (var i = 0; i < set.length; i++) {
+          if (!classes.includes(set[i][field])) {
+            classes.push(set[i][field]);
+          }
+        }
+
+        // substitue in all samples such class with the new binary classes
+        for (var i = 0; i < set.length; i++) {
+          classes.forEach(c => {
+            // new name for this class
+            var new_name = field + "_" + c;
+
+            // add this sample's class
+            set[i][new_name] = (c == set[i][field]) ? 1 : 0;
+          });
+
+          // Delete this attribute
+          delete set[i][field];
+        }
+      }
+    }
+
+    return set;
+  }
+
   ParseText(txt: String, delimiter) {
     var rows = txt.split('\n');
     this.labels = rows[0].split(delimiter);
@@ -28,6 +59,19 @@ export class PreprocessorServiceService {
       this.data.push(element);
     }
     this.data_uploaded = true;
+
+    // remove last instance as it is empty by default always
+    this.data.pop();
+
+    // Apply 1-hot enconding
+    this.data = this.OneHotEncoding(this.data);
+
+    // refresh labels
+    this.labels = [];
+    for (var key in this.data[0]) {
+      this.labels.push(key);
+    }
+
     return this.data;
   }
 
@@ -115,9 +159,6 @@ export class PreprocessorServiceService {
       instance = this.getFilteredObj(instance, labels_to_analyze);
       testSet.push(instance);
     });
-
-    // remove last instance as it is empty by default always
-    testSet.pop();
 
     // Shuffle data set
     this.shuffle(testSet);
