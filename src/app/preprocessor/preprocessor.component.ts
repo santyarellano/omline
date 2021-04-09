@@ -20,7 +20,7 @@ export class PreprocessorComponent implements OnInit {
   dataSource = [];
   dataSource_keys = [];
 
-  constructor(private prep_service: PreprocessorServiceService) {
+  constructor(public prep_service: PreprocessorServiceService) {
   }
 
   ngOnInit(): void {

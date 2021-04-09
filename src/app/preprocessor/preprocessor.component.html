@@ -42,5 +42,14 @@
         </table>
     </div>
 
+    <!-- Automatic preprocessing functions -->
+    <div *ngIf="show_table == true">
+        <br>
+        <h3>
+            Applied 1-Hot enconding to <strong>{{prep_service.encoded_features}}</strong> features
+        </h3>
+        <h3>Removed <strong>{{prep_service.removed_samples}}</strong> samples because of wrong format.</h3>
+    </div>
+
     <mat-progress-bar *ngIf="loading == true" mode="indeterminate"></mat-progress-bar>
 </mat-card>

@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
+import { count, sample } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PreprocessorServiceService {
   data_uploaded = false; // default should be false
+  removed_samples = 0;
+  encoded_features = 0;
   data = [];
   labels = [];
 
@@ -16,8 +19,10 @@ export class PreprocessorServiceService {
 
   OneHotEncoding(set) {
     // Find non-numerical features
+    var _count = 0;
     for (var field in set[0]) {
       if (isNaN(set[0][field])) {
+        _count++;
         // get all classes of this field
         var classes = [];
         for (var i = 0; i < set.length; i++) {
@@ -41,7 +46,7 @@ export class PreprocessorServiceService {
         }
       }
     }
-
+    this.encoded_features = _count;
     return set;
   }
 
@@ -65,6 +70,19 @@ export class PreprocessorServiceService {
 
     // Apply 1-hot enconding
     this.data = this.OneHotEncoding(this.data);
+
+    // Remove features which have NaN values
+    this.removed_samples = this.data.length;
+    this.data = this.data.filter(function (el) {
+      var _hasNan = false;
+      for (var key in el) {
+        if (isNaN(el[key])) {
+          _hasNan = true;
+        }
+      }
+      return !_hasNan;
+    });
+    this.removed_samples = Math.abs(this.removed_samples - this.data.length);
 
     // refresh labels
     this.labels = [];
