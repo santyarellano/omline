@@ -24,6 +24,27 @@
             (CSV)</button>
     </div>
 
+    <!-- Features to keep -->
+    <br>
+    <section class="grid-section" *ngIf="show_features_select">
+        <span class="checkbox-list-section">
+            <mat-checkbox class="example-margin" color="primary" [checked]="selectedAllFeatures"
+                [indeterminate]="someComplete()" (change)="setAll($event.checked)">
+                {{features.name}}
+            </mat-checkbox>
+        </span>
+        <span class="checkbox-list-section">
+            <ul>
+                <li *ngFor="let subfeature of features.subfeatures">
+                    <mat-checkbox [(ngModel)]="subfeature.selected" color="primary"
+                        (ngModelChange)="updateAllFeaturesSelected()">
+                        {{subfeature.name}}
+                    </mat-checkbox>
+                </li>
+            </ul>
+        </span>
+    </section>
+
     <!-- Table -->
     <div *ngIf="show_table == true" style="margin-top: 2%;">
         <mat-card-subtitle>Showing only top 5 elements</mat-card-subtitle>

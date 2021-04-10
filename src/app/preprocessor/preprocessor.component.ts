@@ -2,6 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { rejects } from 'assert';
 import { PreprocessorServiceService } from '../preprocessor-service.service';
 
+export interface Feature {
+  name: string;
+  selected: boolean;
+  subfeatures?: Feature[];
+}
+
 @Component({
   selector: 'app-preprocessor',
   templateUrl: './preprocessor.component.html',
@@ -17,13 +23,54 @@ export class PreprocessorComponent implements OnInit {
     'Semicolon'
   ];
   show_table = false;
+  show_features_select = false;
   dataSource = [];
   dataSource_keys = [];
+
+  features: Feature = {
+    name: 'Features to keep',
+    selected: false,
+    subfeatures: []
+  };
+  selectedAllFeatures: boolean = false;
+  predict_feature: string;
+  selected_features: string[];
 
   constructor(public prep_service: PreprocessorServiceService) {
   }
 
   ngOnInit(): void {
+  }
+
+  someComplete(): boolean {
+    if (this.features.subfeatures == null) {
+      return false;
+    }
+    return this.features.subfeatures.filter(t => t.selected).length > 0 && !this.selectedAllFeatures;
+  }
+
+  setAll(selected: boolean) {
+    this.selectedAllFeatures = selected;
+    if (this.features.subfeatures == null) {
+      return;
+    }
+    this.features.subfeatures.forEach(t => t.selected = selected);
+    this.updateSelectedFeatures();
+  }
+
+  updateAllFeaturesSelected() {
+    this.selectedAllFeatures = this.features.subfeatures != null && this.features.subfeatures.every(t => t.selected);
+    this.updateSelectedFeatures();
+  }
+
+  updateSelectedFeatures() {
+    this.selected_features = [];
+    this.features.subfeatures.forEach((feature) => {
+      if (feature.selected) {
+        this.selected_features.push(feature.name);
+      }
+    });
+    this.predict_feature = this.selected_features[0];
   }
 
   /*
@@ -44,7 +91,20 @@ export class PreprocessorComponent implements OnInit {
         // assign to content and draw in table
         this.dataSource = content;
         this.dataSource_keys = Object.keys(this.dataSource[0]);
-        this.show_table = true;
+        //this.show_table = true;
+
+        // Add features to checkbox list
+        this.prep_service.labels.forEach(label => {
+          var auxFeature = {
+            name: label,
+            selected: false
+          };
+
+          this.features.subfeatures.push(auxFeature);
+        });
+        this.setAll(true);
+
+        this.show_features_select = true;
         this.loading = false;
       });
     }
