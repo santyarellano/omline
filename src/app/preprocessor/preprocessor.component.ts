@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
 import { rejects } from 'assert';
 import { PreprocessorServiceService } from '../preprocessor-service.service';
 
@@ -33,7 +34,6 @@ export class PreprocessorComponent implements OnInit {
     subfeatures: []
   };
   selectedAllFeatures: boolean = false;
-  predict_feature: string;
   selected_features: string[];
 
   constructor(public prep_service: PreprocessorServiceService) {
@@ -70,7 +70,10 @@ export class PreprocessorComponent implements OnInit {
         this.selected_features.push(feature.name);
       }
     });
-    this.predict_feature = this.selected_features[0];
+
+    this.prep_service.UpdateDataByFeatures(this.selected_features);
+    this.dataSource = this.prep_service.data;
+    this.dataSource_keys = this.selected_features;
   }
 
   /*
@@ -82,6 +85,8 @@ export class PreprocessorComponent implements OnInit {
     this.csv_file = fileInputEvent.target.files[0];
     this.loading = true;
     let btn = document.getElementById("file-input");
+    this.features.subfeatures = [];
+
     if (this.csv_file) {
       if (btn) {
         btn.textContent = this.csv_file.name;

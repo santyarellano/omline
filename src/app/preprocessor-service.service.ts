@@ -54,6 +54,7 @@ export class PreprocessorServiceService {
   ParseText(txt: String, delimiter) {
     var rows = txt.split('\n');
     this.labels = rows[0].split(delimiter);
+    this.data = [];
 
     // split by delimiter
     for (var i = 1; i < rows.length - 1; i++) {
@@ -97,6 +98,25 @@ export class PreprocessorServiceService {
     return this.data;
   }
 
+  UpdateDataByFeatures(feats) {
+    this.data = [];
+    this.labels = feats;
+    this.complete_data.forEach(sample => {
+      var _temp = {};
+      for (var key in sample) {
+        if (feats.includes(key)) {
+          _temp[key] = sample[key];
+        }
+        this.data.push(_temp);
+      }
+    });
+
+    // Update linear learner
+    this.data_uploaded = false;
+    setTimeout(() => {
+      this.data_uploaded = true;
+    }, 10);
+  }
 
   // returns [avg, max, min]
   getAvgMinMax(set, param) {
