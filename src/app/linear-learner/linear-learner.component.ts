@@ -100,10 +100,12 @@ export class LinearLearnerComponent implements OnInit {
     },
     series: [
       {
+        name: 'Real Values',
         data: this.testing_plot_real,
         type: 'line',
       },
       {
+        name: 'Hypothesis',
         data: this.testing_plot_hyp,
         type: 'line',
       },
