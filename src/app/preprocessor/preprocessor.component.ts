@@ -28,7 +28,7 @@ export class PreprocessorComponent implements OnInit {
   dataSource_keys = [];
 
   features: Feature = {
-    name: 'Features to keep',
+    name: 'Features to consider',
     selected: false,
     subfeatures: []
   };
@@ -91,7 +91,7 @@ export class PreprocessorComponent implements OnInit {
         // assign to content and draw in table
         this.dataSource = content;
         this.dataSource_keys = Object.keys(this.dataSource[0]);
-        //this.show_table = true;
+        this.show_table = true;
 
         // Add features to checkbox list
         this.prep_service.labels.forEach(label => {

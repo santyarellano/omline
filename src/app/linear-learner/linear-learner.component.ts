@@ -20,7 +20,7 @@ export class LinearLearnerComponent implements OnInit {
   epochs_limit = 5000;
   error_limit = 1;
   ms_per_epoch = 1;
-  learning_rate = 0.033;
+  learning_rate = 0.33;
   training_proportion = 75;
   testing_proportion = 100 - this.training_proportion;
   running = false;
@@ -228,7 +228,7 @@ export class LinearLearnerComponent implements OnInit {
       // update series data:
       this.updateOptions = {
         title: {
-          text: `Mean Square Error: ${rounded}%\nEpoch: ${this.current_epoch}`
+          text: `Mean Square Error: ${rounded}\nEpoch: ${this.current_epoch}`
         },
         series: [{
           data: this.mse_history

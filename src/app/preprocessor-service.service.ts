@@ -8,6 +8,7 @@ export class PreprocessorServiceService {
   data_uploaded = false; // default should be false
   removed_samples = 0;
   encoded_features = 0;
+  complete_data = [];
   data = [];
   labels = [];
 
@@ -67,6 +68,9 @@ export class PreprocessorServiceService {
 
     // remove last instance as it is empty by default always
     this.data.pop();
+
+    // Copy data before applying other processes.
+    this.complete_data = this.data;
 
     // Apply 1-hot enconding
     this.data = this.OneHotEncoding(this.data);
