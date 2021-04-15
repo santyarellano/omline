@@ -361,6 +361,9 @@ export class LinearLearnerComponent implements OnInit {
 
     var accur = accuracy_sum / this.training_set.length;
     this.training_accuracy = +accur.toFixed(2);
+
+    this.training_plot_hyp.sort(function(a, b){return a - b});
+    this.training_plot_real.sort(function(a, b){return a - b});
   }
 
   GetTestingPlot() {
@@ -380,6 +383,9 @@ export class LinearLearnerComponent implements OnInit {
 
     var accur = accuracy_sum / this.testing_set.length;
     this.testing_accuracy = +accur.toFixed(2);
+
+    this.testing_plot_hyp.sort(function(a, b){return a - b});
+    this.testing_plot_real.sort(function(a, b){return a - b});
   }
 
   run_test() {
