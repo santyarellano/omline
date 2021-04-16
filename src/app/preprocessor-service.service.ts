@@ -10,7 +10,9 @@ export class PreprocessorServiceService {
   encoded_features = 0;
   complete_data = [];
   data = [];
+  raw_labels = [];
   labels = [];
+  encoded_labels = [];
 
   means = {};
   mins = {};
@@ -33,10 +35,14 @@ export class PreprocessorServiceService {
         }
 
         // substitue in all samples such class with the new binary classes
+        this.encoded_labels = [];
         for (var i = 0; i < set.length; i++) {
           classes.forEach(c => {
             // new name for this class
             var new_name = field + "_" + c;
+            if (!this.encoded_labels.includes(new_name)) {
+              this.encoded_labels.push(new_name);
+            }
 
             // add this sample's class
             set[i][new_name] = (c == set[i][field]) ? 1 : 0;
@@ -51,8 +57,33 @@ export class PreprocessorServiceService {
     return set;
   }
 
+  RemoveRowsWithNan() {
+    this.removed_samples = this.data.length;
+    this.data = this.data.filter(function (el) {
+      var _hasNan = false;
+      for (var key in el) {
+        if (isNaN(el[key])) {
+          _hasNan = true;
+        }
+      }
+      return !_hasNan;
+    });
+    this.removed_samples = Math.abs(this.removed_samples - this.data.length);
+  }
+
+  // returns an unbinded copy of complete_data
+  GetCompleteData() {
+    return JSON.parse(JSON.stringify(this.complete_data));
+  }
+
+  // returns an unbinded copy of data
+  GetData() {
+    return JSON.parse(JSON.stringify(this.data));
+  }
+
   ParseText(txt: String, delimiter) {
     var rows = txt.split('\n');
+    this.raw_labels = rows[0].split(delimiter);
     this.labels = rows[0].split(delimiter);
     this.data = [];
 
@@ -71,23 +102,11 @@ export class PreprocessorServiceService {
     this.data.pop();
 
     // Copy data before applying other processes.
-    this.complete_data = this.data;
+    this.complete_data = this.GetData();
 
-    // Apply 1-hot enconding
+    // Apply 1-hot enconding & cleaning
     this.data = this.OneHotEncoding(this.data);
-
-    // Remove features which have NaN values
-    this.removed_samples = this.data.length;
-    this.data = this.data.filter(function (el) {
-      var _hasNan = false;
-      for (var key in el) {
-        if (isNaN(el[key])) {
-          _hasNan = true;
-        }
-      }
-      return !_hasNan;
-    });
-    this.removed_samples = Math.abs(this.removed_samples - this.data.length);
+    this.RemoveRowsWithNan();
 
     // refresh labels
     this.labels = [];
@@ -99,14 +118,35 @@ export class PreprocessorServiceService {
   }
 
   UpdateDataByFeatures(feats) {
+    var _tempData = this.GetCompleteData();
+    _tempData = this.OneHotEncoding(_tempData);
     this.data = [];
-    this.labels = feats;
-    this.complete_data.forEach(sample => {
+    this.labels = Object.keys(_tempData[0]);
+
+    // Get Selected Encoded Features
+    var selected_encoded_feats = [];
+    this.encoded_labels.forEach(label => {
+      feats.forEach(feat => {
+        if (this.encoded_labels.includes(feat)) {
+          selected_encoded_feats.push(label);
+          // THIS IS NOT WORKING BECAUSE OF "_"
+        }
+      });
+    });
+    console.log(feats);
+
+    _tempData.forEach(sample => {
       var _temp = {};
       for (var key in sample) {
         if (feats.includes(key)) {
           _temp[key] = sample[key];
+        } else if (selected_encoded_feats.includes(key)) {
+          // add selected encoded features
+          _temp[key] = sample[key];
+        } else {
+          //console.log(key);
         }
+
         this.data.push(_temp);
       }
     });

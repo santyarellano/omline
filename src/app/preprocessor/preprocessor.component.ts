@@ -72,8 +72,8 @@ export class PreprocessorComponent implements OnInit {
     });
 
     this.prep_service.UpdateDataByFeatures(this.selected_features);
-    this.dataSource = this.prep_service.data;
-    this.dataSource_keys = this.selected_features;
+    this.dataSource = this.prep_service.GetData();
+    this.dataSource_keys = this.prep_service.labels;
   }
 
   /*
@@ -99,7 +99,7 @@ export class PreprocessorComponent implements OnInit {
         this.show_table = true;
 
         // Add features to checkbox list
-        this.prep_service.labels.forEach(label => {
+        this.prep_service.raw_labels.forEach(label => {
           var auxFeature = {
             name: label,
             selected: false
