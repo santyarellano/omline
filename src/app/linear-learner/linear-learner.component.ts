@@ -19,7 +19,7 @@ export interface Feature {
 export class LinearLearnerComponent implements OnInit {
   epochs_limit = 5000;
   error_limit = 1;
-  ms_per_epoch = 1;
+  ms_per_epoch = 10;
   learning_rate = 0.33;
   training_proportion = 75;
   testing_proportion = 100 - this.training_proportion;
@@ -318,6 +318,7 @@ export class LinearLearnerComponent implements OnInit {
     this.mse = error_acum / this.training_set.length;
     this.mse *= 100;
     this.mse_history.push(this.mse);
+    
   }
 
   Epoch() {

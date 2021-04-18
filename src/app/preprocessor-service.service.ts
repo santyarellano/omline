@@ -149,7 +149,6 @@ export class PreprocessorServiceService {
         if (feats.includes(key)) {
           _temp[key] = sample[key];
         } else {
-          //console.log(key);
           selected_encoded_feats.forEach(ft => {
             if (key.startsWith(ft)) {
               _temp[key] = sample[key];
