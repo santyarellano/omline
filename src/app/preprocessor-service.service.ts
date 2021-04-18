@@ -13,6 +13,7 @@ export class PreprocessorServiceService {
   raw_labels = [];
   labels = [];
   encoded_labels = [];
+  encoded_original_labels = []
 
   means = {};
   mins = {};
@@ -23,6 +24,7 @@ export class PreprocessorServiceService {
   OneHotEncoding(set) {
     // Find non-numerical features
     var _count = 0;
+    this.encoded_labels = [];
     for (var field in set[0]) {
       if (isNaN(set[0][field])) {
         _count++;
@@ -35,7 +37,6 @@ export class PreprocessorServiceService {
         }
 
         // substitue in all samples such class with the new binary classes
-        this.encoded_labels = [];
         for (var i = 0; i < set.length; i++) {
           classes.forEach(c => {
             // new name for this class
@@ -50,6 +51,11 @@ export class PreprocessorServiceService {
 
           // Delete this attribute
           delete set[i][field];
+        }
+
+        // Add original label to dictionary
+        if (!this.encoded_original_labels.includes(field)) {
+          this.encoded_original_labels.push(field);
         }
       }
     }
@@ -117,45 +123,52 @@ export class PreprocessorServiceService {
     return this.data;
   }
 
+  GetEncodedFeats(feats) {
+    var ret = [];
+
+    feats.forEach(ft => {
+      if (this.encoded_original_labels.includes(ft)) {
+        ret.push(ft);
+      }
+    });
+
+    return ret;
+  }
+
   UpdateDataByFeatures(feats) {
     var _tempData = this.GetCompleteData();
     _tempData = this.OneHotEncoding(_tempData);
     this.data = [];
-    this.labels = Object.keys(_tempData[0]);
 
     // Get Selected Encoded Features
-    var selected_encoded_feats = [];
-    this.encoded_labels.forEach(label => {
-      feats.forEach(feat => {
-        if (this.encoded_labels.includes(feat)) {
-          selected_encoded_feats.push(label);
-          // THIS IS NOT WORKING BECAUSE OF "_"
-        }
-      });
-    });
-    console.log(feats);
+    var selected_encoded_feats = this.GetEncodedFeats(feats);
 
     _tempData.forEach(sample => {
       var _temp = {};
       for (var key in sample) {
         if (feats.includes(key)) {
           _temp[key] = sample[key];
-        } else if (selected_encoded_feats.includes(key)) {
-          // add selected encoded features
-          _temp[key] = sample[key];
         } else {
           //console.log(key);
+          selected_encoded_feats.forEach(ft => {
+            if (key.startsWith(ft)) {
+              _temp[key] = sample[key];
+            }
+          });
         }
 
         this.data.push(_temp);
       }
     });
 
+    // Update labels
+    this.labels = Object.keys(this.data[0]);
+
     // Update linear learner
     this.data_uploaded = false;
     setTimeout(() => {
       this.data_uploaded = true;
-    }, 10);
+    }, 50);
   }
 
   // returns [avg, max, min]
